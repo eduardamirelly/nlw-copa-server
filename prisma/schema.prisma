@@ -24,3 +24,7 @@ model Pool {
 model User {
   id String @id @default(cuid())
 }
+
+model Game {
+  id String @id @default(cuid())
+}

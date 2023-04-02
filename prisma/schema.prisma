@@ -22,7 +22,8 @@ model Pool {
 }
 
 model Participant {
-  id String @id @default(cuid())
+  id      String  @id @default(cuid())
+  guesses Guess[]
 }
 
 model User {
@@ -38,8 +39,17 @@ model Game {
   date                  DateTime
   firstTeamCountryCode  String
   secondTeamCountryCode String
+  guesses               Guess[]
 }
 
 model Guess {
-  id String @id @default(cuid())
+  id               String   @id @default(cuid())
+  firstTeamPoints  Int
+  secondTeamPoints Int
+  createdAt        DateTime @default(now())
+  gameId           String
+  participantId    String
+
+  participant Participant @relation(fields: [participantId], references: [id])
+  game        Game        @relation(fields: [gameId], references: [id])
 }

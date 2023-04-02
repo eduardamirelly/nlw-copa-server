@@ -21,6 +21,10 @@ model Pool {
   createdAt DateTime @default(now())
 }
 
+model Participant {
+  id String @id @default(cuid())
+}
+
 model User {
   id String @id @default(cuid())
 }

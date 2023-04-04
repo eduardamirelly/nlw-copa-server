@@ -19,8 +19,11 @@ model Pool {
   title     String
   code      String   @unique
   createdAt DateTime @default(now())
+  ownerId   String?
 
   participant Participant[]
+
+  owner User? @relation(fields: [ownerId], references: [id])
 }
 
 model Participant {
@@ -31,6 +34,8 @@ model Participant {
 
   user User? @relation(fields: [userId], references: [id])
   pool Pool  @relation(fields: [poolId], references: [id])
+
+  @@unique([userId, poolId])
 }
 
 model User {
@@ -40,7 +45,8 @@ model User {
   avatarUrl String?
   createdAt DateTime @default(now())
 
-  participant Participant[]
+  participatingAt Participant[]
+  ownPools        Pool[]
 }
 
 model Game {

@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import { z } from 'zod';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient({
@@ -21,7 +22,11 @@ async function bootstrap() {
   });
 
   fastify.post('/pools', async (request, reply) => {
-    const { title } = request.body;
+    const createPoolBody = z.object({
+      title: z.string(),
+    });
+
+    const { title } = createPoolBody.parse(request.body);
 
     return reply.status(201).send({ title });
   });

@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { z } from 'zod';
+import ShortUniqueId from 'short-unique-id';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient({
@@ -27,6 +28,15 @@ async function bootstrap() {
     });
 
     const { title } = createPoolBody.parse(request.body);
+
+    const generate = new ShortUniqueId({ length: 6 });
+
+    await prisma.pool.create({
+      data: {
+        title,
+        code: generate(),
+      },
+    });
 
     return reply.status(201).send({ title });
   });
